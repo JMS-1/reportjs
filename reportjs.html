@@ -37,17 +37,16 @@
         <p-datatable id="report_datatable" :value="report_datarows" ref="dt" :export-filename="exportFilenameCsv" scrollable scroll-height="flex" table-style="min-width: 50rem">
           <template #header>
             <div class="text-end pb-4">
-              <p-select v-model="selectedReport" :options="reports" option-label="id" @change="selectedReport_changed" placeholder="Select a report" class="w-full md:w-56"></p-select>
+              <p-select v-model="selectedReport" :options="reports" option-label="sessionName" @change="selectedReport_changed" placeholder="Select a report" class="w-full md:w-56"></p-select>
               <p-button icon="pi pi-refresh"    rounded @click="loadReports($event)" v-tooltip.bottom="{ value: 'Refresh list of reports', autoHide: false }"></p-button>
               <p-button icon="pi pi-file"       rounded @click="exportCSV($event)"   :disabled="!selectedReport" v-tooltip.bottom="{ value: 'Export as CSV', autoHide: false }"></p-button>
               <p-button icon="pi pi-file-excel" rounded @click="exportExcel($event)" :disabled="!selectedReport" v-tooltip.bottom="{ value: 'Export as XLSX', autoHide: false }"></p-button>
               <p-button icon="pi pi-file-pdf"   rounded @click="exportPDF($event)"   :disabled="!selectedReport" v-tooltip.bottom="{ value: 'Export as PDF', autoHide: false }"></p-button>
             </div>
           </template>
-          <p-column field="code" header="Code" export-header="Product Code"></p-column>
-          <p-column field="name" header="Name"></p-column>
-          <p-column field="category" header="Category"></p-column>
-          <p-column field="quantity" header="Quantity"></p-column>
+          <p-column field="transactionName" header="Transaction name"></p-column>
+          <p-column field="contentset" header="Content"></p-column>
+          <p-column field="startTime" header="Start Time"></p-column>
         </p-datatable>
       </div>
     </div>

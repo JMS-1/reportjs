@@ -3,16 +3,6 @@ const { createApp, ref, computed } = Vue;
 const app = createApp({
   setup() {
 
-    /*
-    const cols = [
-      { field: 'code', header: 'Code' },
-      { field: 'name', header: 'Name' },
-      { field: 'category', header: 'Category' },
-      { field: 'quantity', header: 'Quantity' }
-    ];
-
-    const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
-    */
     
     const reports = ref([]);  
     const report_datarows = ref([]);
@@ -21,14 +11,14 @@ const app = createApp({
     const selectedReport = ref();
 
     const selectedReport_changed = (event) => {
-      exportFilenameCsv.value = "report_" + event.value.id;
-      fetch("./reports/report_" + event.value.id + ".json")
+      exportFilenameCsv.value = "" + event.value.sessionName;
+      fetch("./reports/" + event.value.sessionName + ".json")
       .then(response => response.json())
       .then(json => report_datarows.value = json);
     }
 
     const loadReports = () => {
-      fetch("./reports/reports.json")
+      fetch("./reports/AllSessions.json")
       .then(response => response.json())
       .then(json => reports.value = json);
     };
@@ -39,24 +29,17 @@ const app = createApp({
     
     const exportPDF = () => {
         const doc = new jspdf.jsPDF('p');
-        /*
-        doc.autoTable(
-          { columns: exportColumns, 
-            body: report_datarows
-          }
-        );
-        */
         const p_datatable = document.getElementById('report_datatable');
         const html_tables = p_datatable.querySelectorAll(':scope > div > table');
         doc.autoTable({ html: html_tables[0] });
-        doc.save('report_' + selectedReport.value.id + '.pdf');
+        doc.save('report_' + selectedReport.value.sessionName + '.pdf');
     };
 
     const exportExcel = () => {
       const worksheet = XLSX.utils.json_to_sheet(report_datarows._rawValue);
       const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
       const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      saveAsExcelFile(excelBuffer, 'report_' + selectedReport.value.id);
+      saveAsExcelFile(excelBuffer, 'report_' + selectedReport.value.sessionName);
     };
     
     const saveAsExcelFile = (buffer, fileName) => {
@@ -64,7 +47,7 @@ const app = createApp({
       const EXCEL_EXTENSION = '.xlsx';
       const data = new Blob([buffer], { type: EXCEL_TYPE });
       saveAs(data, fileName + EXCEL_EXTENSION);
-    };    
+    };
 
     loadReports();
     
@@ -89,26 +72,12 @@ app.use(PrimeVue.Config, {
   },
 });
 
-/*
-app.use(PrimeVue.ConfirmationService);
-app.use(PrimeVue.ToastService);
-*/
-
 app.component('p-button', PrimeVue.Button);
 app.component('p-datatable', PrimeVue.DataTable);
 app.component('p-column', PrimeVue.Column);
 app.component('p-columngroup', PrimeVue.ColumnGroup);
 app.component('p-row', PrimeVue.Row);
 app.component('p-select', PrimeVue.Select);
-/*
-app.component('p-inputnumber', PrimeVue.InputNumber);
-app.component('p-inputtext', PrimeVue.InputText);
-app.component('p-tag', PrimeVue.Tag);
-app.component('p-datepicker', PrimeVue.DatePicker);
-app.component('p-dialog', PrimeVue.Dialog);
-app.component('p-confirmdialog', PrimeVue.ConfirmDialog);
-app.component('p-toast', PrimeVue.Toast);
-*/
 
 app.directive('tooltip', PrimeVue.Tooltip);
 
