@@ -1,0 +1,25 @@
+{
+  "name": "reportjs",
+  "version": "1.0.0",
+  "description": "## Bibliotheken",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZeraGmbH/reportjs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZeraGmbH/reportjs/issues"
+  },
+  "homepage": "https://github.com/ZeraGmbH/reportjs#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
