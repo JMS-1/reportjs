@@ -17,6 +17,11 @@ const app = createApp({
       .then(json => report_datarows.value = json);
     }
 
+    const onRowClick = (event) => {
+      const transaction = encodeURIComponent(event.data.transactionName);
+      window.open(`content.html?transaction=${transaction}`) // if you add name, new instance overwrites
+    }
+
     const loadReports = () => {
       fetch("./reports/AllSessions.json")
       .then(response => response.json())
@@ -61,7 +66,8 @@ const app = createApp({
       loadReports,
       exportCSV,
       exportPDF,
-      exportExcel
+      exportExcel,
+      onRowClick,
     };
   },
 });

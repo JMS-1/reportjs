@@ -34,7 +34,7 @@
   <body>
     <div id="app">
       <div class="card flex justify-center" style="height: 800px;">
-        <p-datatable id="report_datatable" :value="report_datarows" ref="dt" :export-filename="exportFilenameCsv" scrollable scroll-height="flex" table-style="min-width: 50rem">
+        <p-datatable id="report_datatable" :value="report_datarows" ref="dt" :export-filename="exportFilenameCsv" @row-click="onRowClick" class="cursor-pointer" scrollable scroll-height="flex" table-style="min-width: 50rem">
           <template #header>
             <div class="text-end pb-4">
               <p-select v-model="selectedReport" :options="reports" option-label="sessionName" @change="selectedReport_changed" placeholder="Select a report" class="w-full md:w-56"></p-select>
@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <script type="text/javascript" src="./resources/reportjs_20250126_1656.js"></script>
+    <script type="module" src="./resources/reportjs_20250126_1656.js"></script>
 
   </body>
 </html>
