@@ -24,31 +24,5 @@
 
   <script type="module" src="./resources/jsonFormatter.js"></script>
   <script type="module" src="./resources/createTables.js"></script>
-  <script type="module">
-    import { loggedTables, CreateTables } from './resources/createTables.js';
-    const { createApp, ref, onMounted } = Vue;
-
-    const app = createApp({
-      setup() {
-        onMounted(() => {
-          const params = new URLSearchParams(window.location.search);
-          const transaction = params.get('transaction');
-          document.body.insertAdjacentHTML('afterbegin', `<h2>Transaction: ${transaction}</h2>`);
-          CreateTables(transaction);
-        });
-        return { loggedTables };
-      },
-    });
-
-    app.use(PrimeVue.Config, {
-      theme: {
-        preset: PrimeVue.Themes.Aura,
-      },
-    });
-    app.component('p-datatable',PrimeVue.DataTable);
-    app.component('p-column', PrimeVue.Column);
-
-    app.mount('#app');
-  </script>
 </body>
 </html>
