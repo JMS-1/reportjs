@@ -2,9 +2,7 @@ const { createApp, ref, computed } = Vue;
 
 const app = createApp({
   setup() {
-
-    
-    const reports = ref([]);  
+    const reports = ref([]);
     const report_datarows = ref([]);
     const dt = ref();
     const exportFilenameCsv = ref();
@@ -13,62 +11,70 @@ const app = createApp({
     const selectedReport_changed = (event) => {
       exportFilenameCsv.value = "" + event.value.sessionName;
       fetch("./reports/" + event.value.sessionName + ".json")
-      .then(response => response.json())
-      .then(json => report_datarows.value = json);
-    }
+        .then((response) => response.json())
+        .then((json) => (report_datarows.value = json));
+    };
 
     const onRowClick = (event) => {
       const transaction = encodeURIComponent(event.data.transactionName);
-      window.open(`content.html?transaction=${transaction}`) // if you add name, new instance overwrites
-    }
+      window.open(`content.html?transaction=${transaction}`); // if you add name, new instance overwrites
+    };
 
     const loadReports = () => {
       fetch("./reports/AllSessions.json")
-      .then(response => response.json())
-      .then(json => reports.value = json);
+        .then((response) => response.json())
+        .then((json) => (reports.value = json));
     };
 
-    const exportCSV = () => { 
-      dt.value.exportCSV(); 
+    const exportCSV = () => {
+      dt.value.exportCSV();
     };
-    
+
     const exportPDF = () => {
-        const doc = new jspdf.jsPDF('p');
-        const p_datatable = document.getElementById('report_datatable');
-        const html_tables = p_datatable.querySelectorAll(':scope > div > table');
-        doc.autoTable({ html: html_tables[0] });
-        doc.save('report_' + selectedReport.value.sessionName + '.pdf');
+      const doc = new jspdf.jsPDF("p");
+      const p_datatable = document.getElementById("report_datatable");
+      const html_tables = p_datatable.querySelectorAll(":scope > div > table");
+      doc.autoTable({ html: html_tables[0] });
+      doc.save("report_" + selectedReport.value.sessionName + ".pdf");
     };
 
     const exportExcel = () => {
       const worksheet = XLSX.utils.json_to_sheet(report_datarows._rawValue);
-      const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      saveAsExcelFile(excelBuffer, 'report_' + selectedReport.value.sessionName);
+      const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+      saveAsExcelFile(
+        excelBuffer,
+        "report_" + selectedReport.value.sessionName
+      );
     };
-    
+
     const saveAsExcelFile = (buffer, fileName) => {
-      const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-      const EXCEL_EXTENSION = '.xlsx';
+      const EXCEL_TYPE =
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+      const EXCEL_EXTENSION = ".xlsx";
       const data = new Blob([buffer], { type: EXCEL_TYPE });
       saveAs(data, fileName + EXCEL_EXTENSION);
     };
 
     loadReports();
-    
-    return {
-      reports,
-      report_datarows,
-      dt,
-      exportFilenameCsv,
-      selectedReport,
-      selectedReport_changed,
-      loadReports,
-      exportCSV,
-      exportPDF,
-      exportExcel,
-      onRowClick,
+
+    const data = {
+      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      datasets: [
+        {
+          label: "# of Votes",
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1,
+        },
+      ],
     };
+
+    const options = {};
+
+    return { data, options };
   },
 });
 
@@ -78,13 +84,14 @@ app.use(PrimeVue.Config, {
   },
 });
 
-app.component('p-button', PrimeVue.Button);
-app.component('p-datatable', PrimeVue.DataTable);
-app.component('p-column', PrimeVue.Column);
-app.component('p-columngroup', PrimeVue.ColumnGroup);
-app.component('p-row', PrimeVue.Row);
-app.component('p-select', PrimeVue.Select);
+app.component("p-button", PrimeVue.Button);
+app.component("p-datatable", PrimeVue.DataTable);
+app.component("p-column", PrimeVue.Column);
+app.component("p-columngroup", PrimeVue.ColumnGroup);
+app.component("p-row", PrimeVue.Row);
+app.component("p-select", PrimeVue.Select);
+app.component("p-chart", PrimeVue.Chart);
 
-app.directive('tooltip', PrimeVue.Tooltip);
+app.directive("tooltip", PrimeVue.Tooltip);
 
-app.mount('#app');
+app.mount("#app");
